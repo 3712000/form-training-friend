@@ -222,9 +222,9 @@ document.addEventListener('input',ev=>{const el=ev.target;if(el.id==='library-se
 document.addEventListener('submit',async ev=>{if(!['add-form','new-form'].includes(ev.target.id))return;ev.preventDefault();
  if(ev.target.id==='new-form'){try{await flush();current=makeSession($('#new-plan').value,$('#new-date').value);view='train';$('#modal').close();render();window.scrollTo(0,0)}catch(err){toast(err.message)}return}
  if(ev.target.id==='add-form'){if(current.exercises.length>=50)return toast('每次训练最多50个动作。');const id=$('#add-library').value,n=Number($('#custom-sets').value),reps=Number($('#custom-reps').value);if(!Number.isInteger(n)||n<1||n>20||!Number.isInteger(reps)||reps<1||reps>300)return toast('请输入有效组数和次数。');let e;
-  if(id==='custom'){const name=$('#custom-name').value.trim();if(!name)return toast('请填写动作名称');e={id:uid(),exerciseId:'custom-'+uid(),name,group:$('#custom-group').value,mode:$('#custom-mode').value,unilateral:$('#custom-unilateral').checked,targetSets:n,min:reps,max:reps,extra:true,note:'',pain:0,click:false,sets:Array.from({length:l.superset?0:n},setFactory)};}
+  if(id==='custom'){const name=$('#custom-name').value.trim();if(!name)return toast('请填写动作名称');e={id:uid(),exerciseId:'custom-'+uid(),name,group:$('#custom-group').value,mode:$('#custom-mode').value,unilateral:$('#custom-unilateral').checked,targetSets:n,min:reps,max:reps,extra:true,note:'',pain:0,click:false,sets:Array.from({length:n},setFactory)};}
   else if(findLib(id)){e=makeExercise([id,n,reps,reps],true);e.targetSets=n;e.sets=Array.from({length:n},setFactory);}
-  else{const prev=sessions.flatMap(s=>s.exercises).find(e=>e.exerciseId===id);if(!prev)return toast('未找到动作');e={...structuredClone(prev),id:uid(),targetSets:n,min:reps,max:reps,extra:true,note:'',pain:0,click:false,sets:Array.from({length:l.superset?0:n},setFactory)};}
+  else{const prev=sessions.flatMap(s=>s.exercises).find(e=>e.exerciseId===id);if(!prev)return toast('未找到动作');e={...structuredClone(prev),id:uid(),targetSets:n,min:reps,max:reps,extra:true,note:'',pain:0,click:false,sets:Array.from({length:n},setFactory)};}
   current.exercises.push(e);markDirty();$('#modal').close();render();toast('动作已加入，可以开始记录');
  }
 });
